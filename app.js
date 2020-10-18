@@ -5,7 +5,7 @@ const logger = require("morgan");
 const path = require("path");
 const http = require("http");
 const cors = require("cors");
-const socketIo = require("socket.io");
+const socketIO = require("socket.io");
 
 const indexRouter = require("./routes/index");
 const serviceAccount = require("./fire-webchat-server-firebase-adminsdk-9izy6-464c7c9250.json");
@@ -37,7 +37,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
 const server = http.createServer(app);
-const io = socketIo(server);
+server.use(cors())
+const io = socketIO(server);
 let interval;
 io.on("connection", (socket) => {
   console.log("New client connected");
