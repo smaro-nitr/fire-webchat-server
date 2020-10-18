@@ -39,9 +39,6 @@ app.use("/", indexRouter);
 const server = http.createServer(app);
 const io = socketIO(server)
 io.origins((origin, callback) => {
-  if (origin !== 'http://localhost:3000') {
-    return callback('origin not allowed', false);
-  }
   callback(null, true);
 });
 let interval;
@@ -63,6 +60,6 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-server.listen(9000, () => console.log(`Listening on Port 9000`));
+server.listen(3000, () => console.log(`Listening on Port 3000`));
 
 module.exports = app;
