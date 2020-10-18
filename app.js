@@ -35,11 +35,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
-const server = app.listen(9000, () => {
-  console.log("Listening on port: " + 9000);
-});
+const server = require('https').createServer(app)
 const io = socketIO(server);
-io.set("origins", "*:*");
 let interval;
 io.on("connection", (socket) => {
   console.log("New client connected");
@@ -59,5 +56,6 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
+server.listen(9000)
 
 module.exports = app;
