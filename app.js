@@ -5,7 +5,7 @@ const logger = require("morgan");
 const path = require("path");
 const http = require("http");
 const cors = require("cors");
-const socketIO = require("socket.io");
+const socketIO = require("socket.io")
 
 const indexRouter = require("./routes/index");
 const serviceAccount = require("./fire-webchat-server-firebase-adminsdk-9izy6-464c7c9250.json");
@@ -37,7 +37,17 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+  handlePreflightRequest: (req, res) => {
+      const headers = {
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Origin": req.headers.origin,
+          "Access-Control-Allow-Credentials": true
+      };
+      res.writeHead(200, headers);
+      res.end();
+  }
+});
 io.origins('*:*')
 let interval;
 io.on("connection", (socket) => {
