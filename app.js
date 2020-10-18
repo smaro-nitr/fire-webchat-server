@@ -37,8 +37,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
 const server = http.createServer(app);
-server.use(cors())
 const io = socketIO(server);
+io.use(cors())
 let interval;
 io.on("connection", (socket) => {
   console.log("New client connected");
