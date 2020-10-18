@@ -37,18 +37,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
 const server = http.createServer(app);
-const io = socketIO(server, {
-  handlePreflightRequest: (req, res) => {
-      const headers = {
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Origin": req.headers.origin,
-          "Access-Control-Allow-Credentials": true
-      };
-      res.writeHead(200, headers);
-      res.end();
+const io = socketIO(server)
+io.origins((origin, callback) => {
+  if (origin !== 'http://localhost:3000') {
+    return callback('origin not allowed', false);
   }
+  callback(null, true);
 });
-io.origins('*:*')
 let interval;
 io.on("connection", (socket) => {
   console.log("New client connected");
