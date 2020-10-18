@@ -2,7 +2,10 @@
   "name": "chatserver",
   "version": "0.0.0",
   "private": true,
-  "node": "12.18.4",
+  "engines": {
+    "node": "12.18.4",
+    "npm": "6.14.6"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
