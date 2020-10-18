@@ -56,6 +56,6 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-server.listen(9000)
+server.listen(process.env.PORT || 8080)
 
 module.exports = app;
