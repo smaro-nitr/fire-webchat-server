@@ -4,7 +4,7 @@ const express = require("express");
 const logger = require("morgan");
 const path = require("path");
 const cors = require("cors");
-const socketIO = require("socket.io")
+const socketIO = require("socket.io");
 
 const indexRouter = require("./routes/index");
 const serviceAccount = require("./fire-webchat-server-firebase-adminsdk-9izy6-464c7c9250.json");
@@ -15,16 +15,16 @@ admin.initializeApp({
 });
 const db = admin.database();
 const chat = db.ref("/chat");
-chat.set(null)
-let currentChatClear = Date.now()
+chat.set(null);
+let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
-chatClear.set(currentChatClear)
+chatClear.set(currentChatClear);
 setInterval(() => {
-  const newChatClear = currentChatClear + 300000
-  chatClear.set(newChatClear)
-  chat.set(null)
-  currentChatClear = newChatClear
-}, 300000)
+  const newChatClear = currentChatClear + 300000;
+  chatClear.set(newChatClear);
+  chat.set(null);
+  currentChatClear = newChatClear;
+}, 300000);
 
 const app = express();
 app.use(cors());
@@ -38,10 +38,8 @@ app.use("/", indexRouter);
 const server = app.listen(9000, () => {
   console.log("Listening on port: " + 9000);
 });
-const io = socketIO(server)
-io.origins((origin, callback) => {
-  callback(null, true);
-});
+const io = socketIO(server);
+io.set("origins", "*:*");
 let interval;
 io.on("connection", (socket) => {
   console.log("New client connected");
