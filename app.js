@@ -38,7 +38,7 @@ app.use("/", indexRouter);
 
 const server = http.createServer(app);
 const io = socketIO(server);
-io.use(cors())
+io.origins('*:*')
 let interval;
 io.on("connection", (socket) => {
   console.log("New client connected");
