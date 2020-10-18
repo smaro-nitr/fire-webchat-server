@@ -27,7 +27,7 @@ setInterval(() => {
 }, 300000);
 
 const app = express();
-app.use(cors());
+app.use(cors({credentials: true, origin: 'https://fire-webchat.web.app/'}));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
