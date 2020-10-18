@@ -3,7 +3,6 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const logger = require("morgan");
 const path = require("path");
-const http = require("http");
 const cors = require("cors");
 const socketIO = require("socket.io")
 
@@ -36,7 +35,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
-const server = http.createServer(app);
+const server = app.listen(9000, () => {
+  console.log("Listening on port: " + 9000);
+});
 const io = socketIO(server)
 io.origins((origin, callback) => {
   callback(null, true);
@@ -60,6 +61,5 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-server.listen(3000, () => console.log(`Listening on Port 3000`));
 
 module.exports = app;
