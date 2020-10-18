@@ -27,7 +27,7 @@ setInterval(() => {
 }, 300000);
 
 const app = express();
-app.use(cors({credentials: true, origin: 'https://fire-webchat.web.app'}));
+app.use(cors({ credentials: true, origin: "https://fire-webchat.web.app" }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
-const server = require('https').createServer(app)
+const server = require("https").createServer(app);
 const io = socketIO(server);
 let interval;
 io.on("connection", (socket) => {
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-const port = process.env.PORT || 8080;
-server.listen(port)
+const port = process.env.PORT || "8080";
+server.listen(port);
 
 module.exports = app;
