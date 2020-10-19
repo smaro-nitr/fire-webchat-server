@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const util = require("../util/generalUtil");
 
 const chatService = {};
 
@@ -33,7 +34,8 @@ chatService.signUp = (req, res, next) => {
         res.send({
           status: 200,
           message: JSON.stringify({
-            chatClear: data.val(),
+            deafaultParam: util.getConstant(),
+            chatClear: util.getNextClear(data.val()), 
             lastLogin,
             username,
             loggedIn: true,
@@ -76,7 +78,8 @@ chatService.signIn = (req, res, next) => {
           res.send({
             status: 200,
             message: JSON.stringify({
-              chatClear: data.val(),
+              deafaultParam: util.getConstant(),
+              chatClear: util.getNextClear(data.val()),
               lastLogin,
               username,
               loggedIn: true,

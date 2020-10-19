@@ -7,6 +7,7 @@ const cors = require("cors");
 const socketIO = require("socket.io");
 
 const indexRouter = require("./routes/index");
+const util = require("./util/generalUtil");
 const serviceAccount = require("./fire-webchat-server-firebase-adminsdk-9izy6-464c7c9250.json");
 
 admin.initializeApp({
@@ -20,11 +21,11 @@ let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
 chatClear.set(currentChatClear);
 setInterval(() => {
-  const newChatClear = currentChatClear + 300000;
+  const newChatClear = currentChatClear + util.getConstant().clearTime;
   chatClear.set(newChatClear);
   chat.set(null);
   currentChatClear = newChatClear;
-}, 300000);
+}, util.getConstant().clearTime);
 
 const app = express();
 app.use(cors({ credentials: true, origin: "https://fire-webchat.web.app" }));
