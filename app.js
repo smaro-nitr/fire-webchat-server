@@ -56,6 +56,9 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-io.listen(8000);
+const port = process.env.PORT || 8000
+server.listen(port, () => {
+  console.log(`listening on ${port}`);
+})
 
 module.exports = app;
