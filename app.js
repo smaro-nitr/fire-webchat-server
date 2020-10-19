@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
-const server = require("https").createServer(app);
+const server = require("http").createServer(app);
 const io = socketIO(server);
 let interval;
 io.on("connection", (socket) => {
