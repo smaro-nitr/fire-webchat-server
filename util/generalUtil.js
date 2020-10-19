@@ -1,8 +1,8 @@
 const util = {}
 
 const defaultConstant = {
-  clearTime = 300000,
-  signOutTime = 180000
+  clearTime: 300000,
+  signOutTime: 180000
 }
 
 util.getConstant = () => {
