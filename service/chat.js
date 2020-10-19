@@ -34,7 +34,7 @@ chatService.signUp = (req, res, next) => {
         res.send({
           status: 200,
           message: JSON.stringify({
-            deafaultParam: util.getConstant(),
+            defaultParam: util.getConstant(),
             chatClear: util.getNextClear(data.val()), 
             lastLogin,
             username,
@@ -78,7 +78,7 @@ chatService.signIn = (req, res, next) => {
           res.send({
             status: 200,
             message: JSON.stringify({
-              deafaultParam: util.getConstant(),
+              defaultParam: util.getConstant(),
               chatClear: util.getNextClear(data.val()),
               lastLogin,
               username,
