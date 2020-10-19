@@ -21,10 +21,18 @@ let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
 chatClear.set(currentChatClear);
 setInterval(() => {
-  const newChatClear = currentChatClear + util.getConstant().clearTime;
-  chatClear.set(newChatClear);
-  chat.set(null);
-  currentChatClear = newChatClear;
+  chat.child(Date.now()).set({
+    timeStamp: '',
+    sender: '',
+    reciever: '',
+    message: util.getConstant().clearTimeMessage,
+  });
+  setTimeout(() => {
+    const newChatClear = currentChatClear + util.getConstant().clearTime;
+    chatClear.set(newChatClear);
+    chat.set(null);
+    currentChatClear = newChatClear;
+  }, 10000);
 }, util.getConstant().clearTime);
 
 const app = express();
@@ -58,9 +66,9 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8000;
 server.listen(port, () => {
   console.log(`listening on ${port}`);
-})
+});
 
 module.exports = app;

@@ -29,18 +29,14 @@ chatService.signUp = (req, res, next) => {
         loggedIn: true,
       });
 
-      const chatClear = db.ref("/chatClear");
-      chatClear.once("value", function (data) {
-        res.send({
-          status: 200,
-          message: JSON.stringify({
-            defaultParam: util.getConstant(),
-            chatClear: util.getNextClear(data.val()), 
-            lastLogin,
-            username,
-            loggedIn: true,
-          }),
-        });
+      res.send({
+        status: 200,
+        message: JSON.stringify({
+          defaultParam: util.getConstant(),
+          lastLogin,
+          username,
+          loggedIn: true,
+        }),
       });
     }
   });
@@ -73,18 +69,14 @@ chatService.signIn = (req, res, next) => {
           loggedIn: true,
         });
 
-        const chatClear = db.ref("/chatClear");
-        chatClear.once("value", function (data) {
-          res.send({
-            status: 200,
-            message: JSON.stringify({
-              defaultParam: util.getConstant(),
-              chatClear: util.getNextClear(data.val()),
-              lastLogin,
-              username,
-              loggedIn: true,
-            }),
-          });
+        res.send({
+          status: 200,
+          message: JSON.stringify({
+            defaultParam: util.getConstant(),
+            lastLogin,
+            username,
+            loggedIn: true,
+          }),
         });
       } else {
         res.send({ status: 300, message: "Login Failed" });
@@ -164,7 +156,7 @@ chatService.signOut = (req, res, next) => {
       user.child(username).set(userExist);
       res.send({
         status: 200,
-        message: 'Successfully SIgn Out',
+        message: "Successfully SIgn Out",
       });
     }
   });
