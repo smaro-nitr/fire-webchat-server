@@ -85,28 +85,6 @@ chatService.signIn = (req, res, next) => {
   });
 };
 
-chatService.getUser = (req, res, next) => {
-  const db = admin.database();
-  const user = db.ref("/user");
-
-  user.once("value", function (data) {
-    const userRefinedList = [];
-
-    const users = data.val();
-    const usersList = users && Object.keys(users);
-    usersList &&
-      usersList.forEach((user) => {
-        const userRefinedListObj = {};
-        userRefinedListObj["lastLogin"] = users[user].lastLogin;
-        userRefinedListObj["username"] = users[user].username;
-        userRefinedListObj["loggedIn"] = users[user].loggedIn;
-        userRefinedList.push(userRefinedListObj);
-      });
-
-    res.send({ status: 300, message: userRefinedList });
-  });
-};
-
 chatService.sendMessage = (req, res, next) => {
   const db = admin.database();
   const chat = db.ref("/chat");

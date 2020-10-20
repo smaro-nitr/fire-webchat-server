@@ -17,13 +17,6 @@ userRouter.post(
   })
 );
 
-userRouter.get(
-  "/chat-user",
-  (userRouter.getUser = (req, res, next) => {
-    chatService.getUser(req, res, next);
-  })
-);
-
 userRouter.post(
   "/chat-send-message",
   (userRouter.sendMessage = (req, res, next) => {

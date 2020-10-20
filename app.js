@@ -16,6 +16,7 @@ admin.initializeApp({
 });
 const db = admin.database();
 const chat = db.ref("/chat");
+const user = db.ref("/user");
 chat.set(null);
 let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
@@ -54,12 +55,23 @@ io.on("connection", (socket) => {
   if (interval) clearInterval(interval);
 
   chat.on("child_added", function (snapshot, prevChildKey) {
-    const newPost = snapshot.val();
-    socket.emit("child_added", newPost);
+    const messageDetail = snapshot.val();
+    socket.emit("message_added", messageDetail);
   });
   chat.on("child_removed", function (snapshot, prevChildKey) {
-    const newPost = snapshot.val();
-    socket.emit("child_removed", newPost);
+    const messageDetail = snapshot.val();
+    socket.emit("message_removed", messageDetail);
+  });
+
+  user.on("child_added", function (snapshot, prevChildKey) {
+    const userDetail = snapshot.val();
+    delete userDetail.password
+    socket.emit("user_added", userDetail);
+  });
+  user.on("child_changed", function (snapshot, prevChildKey) {
+    const userDetail = snapshot.val();
+    delete userDetail.password
+    socket.emit("user_updated", userDetail);
   });
 
   socket.on("disconnect", () => {
