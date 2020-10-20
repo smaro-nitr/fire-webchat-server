@@ -20,8 +20,7 @@ chatService.signUp = (req, res, next) => {
     if (usernameExist) {
       res.send({ status: 300, message: "Username Already Taken" });
     } else {
-      const newDate = new Date();
-      const lastLogin = `${newDate.getDate()}/${newDate.getMonth()} ${newDate.getHours()}:${newDate.getMinutes()}`;
+      const lastLogin = util.lastLogin();
       user.child(username).set({
         lastLogin,
         username,
@@ -60,8 +59,7 @@ chatService.signIn = (req, res, next) => {
 
     if (userExist) {
       if (validUser) {
-        const newDate = new Date();
-        const lastLogin = `${newDate.getDate()}/${newDate.getMonth()} ${newDate.getHours()}:${newDate.getMinutes()}`;
+        const lastLogin = util.lastLogin();
         user.child(username).set({
           lastLogin,
           username,
@@ -111,10 +109,8 @@ chatService.getUser = (req, res, next) => {
 chatService.sendMessage = (req, res, next) => {
   const db = admin.database();
   const chat = db.ref("/chat");
-  const newDate = new Date();
-  const timeStamp = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
   chat.child(Date.now()).set({
-    timeStamp,
+    timeStamp: util.timeStamp(),
     sender: req.body.sender,
     reciever: req.body.reciever,
     message: req.body.message,
@@ -149,14 +145,12 @@ chatService.signOut = (req, res, next) => {
       });
 
     if (userExist) {
-      const newDate = new Date();
-      const lastLogin = `${newDate.getDate()}/${newDate.getMonth()} ${newDate.getHours()}:${newDate.getMinutes()}`;
-      userExist.lastLogin = lastLogin;
+      userExist.lastLogin = util.lastLogin();
       userExist.loggedIn = false;
       user.child(username).set(userExist);
       res.send({
         status: 200,
-        message: "Successfully SIgn Out",
+        message: "Successfully Sign Out",
       });
     }
   });

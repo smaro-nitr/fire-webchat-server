@@ -20,20 +20,21 @@ chat.set(null);
 let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
 chatClear.set(currentChatClear);
+const getConstant = util.getConstant();
 setInterval(() => {
   chat.child(Date.now()).set({
     timeStamp: '',
     sender: '',
     reciever: '',
-    message: util.getConstant().clearTimeMessage,
+    message: getConstant.clearTimeMessage,
   });
   setTimeout(() => {
-    const newChatClear = currentChatClear + util.getConstant().clearTime;
+    const newChatClear = currentChatClear + getConstant.clearTime;
     chatClear.set(newChatClear);
     chat.set(null);
     currentChatClear = newChatClear;
-  }, 10000);
-}, util.getConstant().clearTime);
+  }, getConstant.warningTime);
+}, getConstant.clearTime);
 
 const app = express();
 app.use(cors({ credentials: true, origin: "https://fire-webchat.web.app" }));
