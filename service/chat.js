@@ -99,6 +99,7 @@ chatService.getUser = (req, res, next) => {
         const userRefinedListObj = {};
         userRefinedListObj["lastLogin"] = users[user].lastLogin;
         userRefinedListObj["username"] = users[user].username;
+        userRefinedListObj["loggedIn"] = users[user].loggedIn;
         userRefinedList.push(userRefinedListObj);
       });
 

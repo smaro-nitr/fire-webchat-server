@@ -1,26 +1,37 @@
-const util = {}
+const util = {};
 
 const defaultConstant = {
-  clearTimeMessage: 'Chat Clean Up Initiated',
+  clearTimeMessage: "Chat Clean Up Initiated",
   clearTime: 600000,
   signOutTime: 120000,
-  warningTime: 30000
-}
+  warningTime: 30000,
+};
 
 util.getConstant = () => {
   return defaultConstant;
-}
+};
+
+appendZero = (value) => {
+  return Number(value) < 10 ? `0${value}` : value;
+};
 
 util.lastLogin = () => {
   const newDate = new Date();
-  const hourFull = newDate.getHours()
-  const hour = hourFull % 12
-  return `${newDate.getDate()}/${newDate.getMonth()+1} ${hour}:${newDate.getMinutes()}${hourFull > 11 ? 'PM':'AM'}`;
-}
+  const date = appendZero(newDate.getDate());
+  const month = appendZero(newDate.getMonth() + 1);
+  const hour = newDate.getHours();
+  const hour12 = appendZero(hour % 12);
+  const minute = appendZero(newDate.getMinutes());
+
+  return `${date}/${month} ${hour12}:${minute}${hour > 11 ? "PM" : "AM"}`;
+};
 
 util.timeStamp = () => {
   const newDate = new Date();
-  return `${newDate.getHours() % 12}:${newDate.getMinutes()}:${newDate.getSeconds()}`
-}
+  const hour12 = appendZero(newDate.getHours() % 12);
+  const minute = appendZero(newDate.getMinutes());
+  const second = appendZero(newDate.getSeconds());
+  return `${hour12}:${minute}:${second}`;
+};
 
 module.exports = util;
