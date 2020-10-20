@@ -2,8 +2,8 @@ const util = {}
 
 const defaultConstant = {
   clearTimeMessage: 'Chat Clean Up Initiated',
-  clearTime: 720000,
-  signOutTime: 180000
+  clearTime: 360000,
+  signOutTime: 120000
 }
 
 util.getConstant = () => {
