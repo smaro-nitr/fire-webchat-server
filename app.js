@@ -17,9 +17,9 @@ admin.initializeApp({
 const db = admin.database();
 const chat = db.ref("/chat");
 const user = db.ref("/user");
-const remember = db.ref("/remember");
+const application = db.ref("/application");
 chat.set(null);
-remember.set(null);
+application.child('remember').set('');
 let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
 chatClear.set(currentChatClear);
@@ -35,14 +35,14 @@ setInterval(() => {
     const newChatClear = currentChatClear + getConstant.clearTime;
     chatClear.set(newChatClear);
     chat.set(null);
-    remember.set(null);
+    application.child('remember').set('');
     currentChatClear = newChatClear;
   }, getConstant.warningTime);
 }, getConstant.clearTime);
 
 const app = express();
-app.use(cors({ credentials: true, origin: "https://fire-webchat.web.app" }));
-// app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+// app.use(cors({ credentials: true, origin: "https://fire-webchat.web.app" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
     socket.emit("user_updated", userDetail);
   });
 
-  remember.on("child_added", function (snapshot, prevChildKey) {
+  application.on("child_changed", function (snapshot, prevChildKey) {
     const remembered = snapshot.val();
     socket.emit("user_remembered", remembered);
   });

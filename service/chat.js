@@ -99,8 +99,8 @@ chatService.sendMessage = (req, res, next) => {
 
 chatService.rememberedUser = (req, res, next) => {
   const db = admin.database();
-  const remember = db.ref("/remember");
-  remember.set(req.body.remember);
+  const application = db.ref("/application");
+  application.child('remember').set(req.body.remember);
   res.send({ status: 200, message: "Remembered Successful" });
 };
 
