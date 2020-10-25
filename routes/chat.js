@@ -25,6 +25,13 @@ userRouter.post(
 );
 
 userRouter.post(
+  "/remember",
+  (userRouter.rememberedUser = (req, res, next) => {
+    chatService.rememberedUser(req, res, next);
+  })
+);
+
+userRouter.post(
   "/chat-clear",
   (userRouter.chatClear = (req, res, next) => {
     chatService.chatClear(req, res, next);

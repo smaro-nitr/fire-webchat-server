@@ -17,22 +17,25 @@ admin.initializeApp({
 const db = admin.database();
 const chat = db.ref("/chat");
 const user = db.ref("/user");
+const remember = db.ref("/remember");
 chat.set(null);
+remember.set(null);
 let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
 chatClear.set(currentChatClear);
 const getConstant = util.getConstant();
 setInterval(() => {
   chat.child(Date.now()).set({
-    timeStamp: '',
-    sender: '',
-    reciever: '',
+    timeStamp: "",
+    sender: "",
+    reciever: "",
     message: getConstant.clearTimeMessage,
   });
   setTimeout(() => {
     const newChatClear = currentChatClear + getConstant.clearTime;
     chatClear.set(newChatClear);
     chat.set(null);
+    remember.set(null);
     currentChatClear = newChatClear;
   }, getConstant.warningTime);
 }, getConstant.clearTime);
@@ -65,13 +68,18 @@ io.on("connection", (socket) => {
 
   user.on("child_added", function (snapshot, prevChildKey) {
     const userDetail = snapshot.val();
-    delete userDetail.password
+    delete userDetail.password;
     socket.emit("user_added", userDetail);
   });
   user.on("child_changed", function (snapshot, prevChildKey) {
     const userDetail = snapshot.val();
-    delete userDetail.password
+    delete userDetail.password;
     socket.emit("user_updated", userDetail);
+  });
+
+  remember.on("child_added", function (snapshot, prevChildKey) {
+    const remembered = snapshot.val();
+    socket.emit("user_remembered", remembered);
   });
 
   socket.on("disconnect", () => {

@@ -97,6 +97,13 @@ chatService.sendMessage = (req, res, next) => {
   res.send({ status: 200, message: "Message Sent Successful" });
 };
 
+chatService.rememberedUser = (req, res, next) => {
+  const db = admin.database();
+  const remember = db.ref("/remember");
+  remember.set(req.body.remember);
+  res.send({ status: 200, message: "Remembered Successful" });
+};
+
 chatService.chatClear = (req, res, next) => {
   const db = admin.database();
   const chat = db.ref("/chat");
