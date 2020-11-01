@@ -1,3 +1,4 @@
+const md5 = require("md5")
 const admin = require("firebase-admin");
 const util = require("../util/generalUtil");
 
@@ -24,7 +25,7 @@ chatService.signUp = (req, res, next) => {
       user.child(username).set({
         lastLogin,
         username,
-        password,
+        token: md5(password),
         loggedIn: true,
       });
 
@@ -54,7 +55,7 @@ chatService.signIn = (req, res, next) => {
     usersList &&
       usersList.forEach((user) => {
         if (users[user].username === username) userExist = true;
-        if (userExist && users[user].password === password) validUser = true;
+        if (userExist && users[user].token === md5(password)) validUser = true;
       });
 
     if (userExist) {
@@ -63,7 +64,7 @@ chatService.signIn = (req, res, next) => {
         user.child(username).set({
           lastLogin,
           username,
-          password,
+          token: md5(password),
           loggedIn: true,
         });
 

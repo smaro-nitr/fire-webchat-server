@@ -73,7 +73,7 @@ io.on("connection", (socket) => {
   });
   user.on("child_changed", function (snapshot, prevChildKey) {
     const userDetail = snapshot.val();
-    delete userDetail.password;
+    delete userDetail.token;
     socket.emit("user_updated", userDetail);
   });
 
