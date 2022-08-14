@@ -6,9 +6,9 @@ const path = require("path");
 const cors = require("cors");
 const socketIO = require("socket.io");
 
-const indexRouter = require("./routes/index");
-const util = require("./util/generalUtil");
-const serviceAccount = require("./fire-webchat-server-firebase-adminsdk-9izy6-464c7c9250.json");
+const indexRouter = require("./route/index");
+const util = require("../util/generalUtil");
+const serviceAccount = require("../fire-webchat-server-firebase-adminsdk-9izy6-464c7c9250.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -19,7 +19,7 @@ const chat = db.ref("/chat");
 const user = db.ref("/user");
 const application = db.ref("/application");
 chat.set(null);
-application.child('remember').set('');
+application.child("remember").set("");
 let currentChatClear = Date.now();
 const chatClear = db.ref("/chatClear");
 chatClear.set(currentChatClear);
@@ -35,7 +35,7 @@ setInterval(() => {
     const newChatClear = currentChatClear + getConstant.clearTime;
     chatClear.set(newChatClear);
     chat.set(null);
-    application.child('remember').set('');
+    application.child("remember").set("");
     currentChatClear = newChatClear;
   }, getConstant.warningTime);
 }, getConstant.clearTime);
@@ -54,7 +54,8 @@ const server = require("http").createServer(app);
 const io = socketIO(server);
 let interval;
 io.on("connection", (socket) => {
-  console.log("New client connected");
+  console.log(`socket io ${socket.id} connected`);
+
   if (interval) clearInterval(interval);
 
   chat.on("child_added", function (snapshot, prevChildKey) {
@@ -83,10 +84,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("Client disconnected");
+    console.log(`socket io ${socket.id} disconnected`);
     clearInterval(interval);
   });
 });
+
 const port = process.env.PORT || 8000;
 server.listen(port, () => {
   console.log(`listening on ${port}`);

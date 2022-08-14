@@ -1,6 +1,6 @@
-const md5 = require("md5")
+const md5 = require("md5");
 const admin = require("firebase-admin");
-const util = require("../util/generalUtil");
+const util = require("../../util/generalUtil");
 
 const chatService = {};
 
@@ -101,7 +101,7 @@ chatService.sendMessage = (req, res, next) => {
 chatService.rememberedUser = (req, res, next) => {
   const db = admin.database();
   const application = db.ref("/application");
-  application.child('remember').set(req.body.remember);
+  application.child("remember").set(req.body.remember);
   res.send({ status: 200, message: "Remembered Successful" });
 };
 
