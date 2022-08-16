@@ -1,47 +1,25 @@
 const express = require("express");
+
+const chatService = require("../controller/chat");
+
 const userRouter = express.Router();
 
-const chatService = require("../service/chat");
-
 userRouter.post(
-  "/chat-sign-up",
-  (userRouter.signUp = (req, res, next) => {
-    chatService.signUp(req, res, next);
-  })
-);
-
-userRouter.post(
-  "/chat-sign-in",
-  (userRouter.signIn = (req, res, next) => {
-    chatService.signIn(req, res, next);
-  })
-);
-
-userRouter.post(
-  "/chat-send-message",
+  "/send-message",
   (userRouter.sendMessage = (req, res, next) => {
     chatService.sendMessage(req, res, next);
   })
 );
-
 userRouter.post(
   "/remember",
   (userRouter.rememberedUser = (req, res, next) => {
     chatService.rememberedUser(req, res, next);
   })
 );
-
 userRouter.post(
-  "/chat-clear",
+  "/clear",
   (userRouter.chatClear = (req, res, next) => {
     chatService.chatClear(req, res, next);
-  })
-);
-
-userRouter.post(
-  "/chat-sign-out",
-  (userRouter.signOut = (req, res, next) => {
-    chatService.signOut(req, res, next);
   })
 );
 
