@@ -1,8 +1,10 @@
 // const admin = require("firebase-admin");
+const socketIo = require("socket.io");
 const md5 = require("md5");
 
 const userDb = require("../model/user.model");
-const util = require("../../util/generalUtil");
+const util = require("../util/generalUtil");
+const eventEmitter = require("../emitter");
 
 async function signUp(req, res, next) {
   try {
@@ -22,9 +24,13 @@ async function signUp(req, res, next) {
       username,
     });
     addUser.save((err, user) => {
-      delete user.token;
-      user.defaultParam = util.getConstant();
-      return res.status(err ? 400 : 200).json(err ? "Unknown error" : user);
+      const addedUser = JSON.parse(JSON.stringify(user));
+      delete addedUser.token;
+      addedUser.defaultParam = util.getConstant();
+      eventEmitter.emit("new_sign_up", addedUser);
+      return res
+        .status(err ? 400 : 200)
+        .json(err ? "Unknown error" : addedUser);
     });
   } catch (err) {
     console.log(err);

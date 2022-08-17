@@ -1,10 +1,8 @@
 const admin = require("firebase-admin");
 
-const util = require("../../util/generalUtil");
+const util = require("../util/generalUtil");
 
-const chatService = {};
-
-chatService.sendMessage = (req, res, next) => {
+sendMessage = (req, res, next) => {
   const db = admin.database();
   const chat = db.ref("/chat");
   chat.child(Date.now()).set({
@@ -15,13 +13,13 @@ chatService.sendMessage = (req, res, next) => {
   });
   res.send({ status: 200, message: "Message Sent Successful" });
 };
-chatService.rememberedUser = (req, res, next) => {
+rememberedUser = (req, res, next) => {
   const db = admin.database();
   const application = db.ref("/application");
   application.child("remember").set(req.body.remember);
   res.send({ status: 200, message: "Remembered Successful" });
 };
-chatService.chatClear = (req, res, next) => {
+chatClear = (req, res, next) => {
   const db = admin.database();
   const chat = db.ref("/chat");
   const chatClear = db.ref("/chatClear");
@@ -33,4 +31,4 @@ chatService.chatClear = (req, res, next) => {
   });
 };
 
-module.exports = chatService;
+module.exports = { sendMessage, rememberedUser, chatClear };
