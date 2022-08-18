@@ -2,6 +2,8 @@
   "name": "fire-webchat-server",
   "version": "0.0.0",
   "private": true,
+  "author": "subhendu kumar sahoo",
+  "email": "smaro.nitr@gmail.com",
   "engines": {
     "node": "12.22.12",
     "npm": "8.1.3"
