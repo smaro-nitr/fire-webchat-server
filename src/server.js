@@ -4,7 +4,7 @@ const socketIo = require("socket.io");
 const { createServer } = require("http");
 
 const app = require("./app");
-const { emitterList, eventEmitter } = require("./emitter");
+const { socketListener } = require("./listener");
 const util = require("./util/generalUtil");
 
 // const db = firebaseAdmin.database();
@@ -86,9 +86,7 @@ const io = socketIo(httpServer, {});
 io.on("connection", (socket) => {
   console.log(`SOCKET: ${socket.id} STARTED`);
 
-  eventEmitter.on(emitterList.newSignUp, (data) => {
-    socket.emit(emitterList.newSignUp, data);
-  });
+  socketListener(socket);
 
   socket.on("disconnect", () => {
     console.log(`SOCKET: ${socket.id} STOPPED`);
@@ -122,10 +120,3 @@ firebaseAdmin
 httpServer.listen(PORT, () =>
   console.log(`PORT: ${PORT}, PID: ${process.pid} STARTED`)
 );
-
-module.exports = (io) => {
-  return (req, res, next) => {
-    req.io = io;
-    next();
-  };
-};

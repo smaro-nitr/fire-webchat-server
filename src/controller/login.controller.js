@@ -1,5 +1,3 @@
-// const admin = require("firebase-admin");
-const socketIo = require("socket.io");
 const md5 = require("md5");
 
 const userDb = require("../model/user.model");
