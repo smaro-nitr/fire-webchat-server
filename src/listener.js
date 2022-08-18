@@ -8,6 +8,10 @@ const socketListener = (socket) => {
   eventEmitter.on(emitterList.newMessage, (data) => {
     socket.emit(emitterList.newMessage, data);
   });
+
+  eventEmitter.on(emitterList.cleanMessage, (data) => {
+    socket.emit(emitterList.cleanMessage, data);
+  });
 };
 
 module.exports = { socketListener };

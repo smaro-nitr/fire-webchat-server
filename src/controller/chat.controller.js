@@ -27,13 +27,9 @@ sendMessage = (req, res, next) => {
 chatClear = (req, res, next) => {
   const db = firebaseAdmin.database();
   const chat = db.ref("/chat");
-  const chatClear = db.ref("/chatClear");
-  chatClear.once("value", function (data) {
-    const nextTimer = data.val() + 300000;
-    chatClear.set(nextTimer);
-    chat.set(null);
-    res.send({ status: 200, message: "Chat Cleared Successfully" });
-  });
+  chat.set(null);
+  eventEmitter.emit(emitterList.cleanMessage, []);
+  return;
 };
 
 module.exports = { getMessage, sendMessage, chatClear };
