@@ -4,7 +4,7 @@ const socketIo = require("socket.io");
 const { createServer } = require("http");
 
 const app = require("./app");
-const eventEmitter = require("./emitter");
+const { emitterList, eventEmitter } = require("./emitter");
 const util = require("./util/generalUtil");
 
 // const db = firebaseAdmin.database();
@@ -86,8 +86,8 @@ const io = socketIo(httpServer, {});
 io.on("connection", (socket) => {
   console.log(`SOCKET: ${socket.id} STARTED`);
 
-  eventEmitter.on("new_sign_up", (data) => {
-    socket.emit("new_sign_up", data);
+  eventEmitter.on(emitterList.newSignUp, (data) => {
+    socket.emit(emitterList.newSignUp, data);
   });
 
   socket.on("disconnect", () => {

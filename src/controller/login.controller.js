@@ -4,7 +4,7 @@ const md5 = require("md5");
 
 const userDb = require("../model/user.model");
 const util = require("../util/generalUtil");
-const eventEmitter = require("../emitter");
+const { emitterList, eventEmitter } = require("../emitter");
 
 async function signUp(req, res, next) {
   try {
@@ -27,7 +27,7 @@ async function signUp(req, res, next) {
       const addedUser = JSON.parse(JSON.stringify(user));
       delete addedUser.token;
       addedUser.defaultParam = util.getConstant();
-      eventEmitter.emit("new_sign_up", addedUser);
+      eventEmitter.emit(emitterList.newSignUp, addedUser);
       return res
         .status(err ? 400 : 200)
         .json(err ? "Unknown error" : addedUser);
