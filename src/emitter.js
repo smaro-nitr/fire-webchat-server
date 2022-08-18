@@ -1,9 +1,9 @@
 const { EventEmitter } = require("events");
 
 const emitterList = {
-  newSignUp: "new-sign-up",
-  newMessage: "new-message",
   cleanMessage: "clean-message",
+  newMessage: "new-message",
+  userUpdate: "user-update",
 };
 
 const eventEmitter = new EventEmitter();

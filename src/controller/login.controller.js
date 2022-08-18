@@ -25,7 +25,7 @@ async function signUp(req, res, next) {
       const addedUser = JSON.parse(JSON.stringify(user));
       delete addedUser.token;
       addedUser.defaultParam = util.getConstant();
-      eventEmitter.emit(emitterList.newSignUp, addedUser);
+      eventEmitter.emit(emitterList.userUpdate, null);
       return res
         .status(err ? 400 : 200)
         .json(err ? "Unknown error" : addedUser);
@@ -60,6 +60,7 @@ async function signIn(req, res, next) {
       const userDetail = JSON.parse(JSON.stringify(user));
       delete userDetail.token;
       userDetail.defaultParam = util.getConstant();
+      eventEmitter.emit(emitterList.userUpdate, null);
       return res
         .status(err ? 400 : 200)
         .json(err ? "Unknown error" : userDetail);
@@ -91,6 +92,7 @@ async function signOut(req, res, next) {
       const userDetail = JSON.parse(JSON.stringify(user));
       delete userDetail.token;
       userDetail.msg = "Succesfully Logout";
+      eventEmitter.emit(emitterList.userUpdate, null);
       return res
         .status(err ? 400 : 200)
         .json(err ? "Unknown error" : userDetail);
