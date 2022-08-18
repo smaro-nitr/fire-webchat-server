@@ -7,7 +7,7 @@ const cors = require("cors");
 const indexRouter = require("./route/index");
 
 const app = express();
-app.use(cors({ credentials: true, origin: "https://fire-webchat.web.app" }));
+app.use(cors({ credentials: true, origin: "https://smaro-webchat.web.app" }));
 // app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(logger("dev"));
 app.use(express.json());

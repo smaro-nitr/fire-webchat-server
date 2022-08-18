@@ -12,8 +12,10 @@ const { chatClear } = require("./route/chat.route");
 const PORT = process.env.PORT || 8000;
 const MONGO_URL =
   "mongodb+srv://smaro:xnyWdDLPQIVJjyWM@nodejs.9jpq7qd.mongodb.net/nodejs?retryWrites=true&w=majority";
-const FB_SECRET_KEY = require("../fire-webchat-server-firebase-adminsdk-9izy6-464c7c9250.json");
-const FB_DB_URL = "https://fire-webchat-server.firebaseio.com";
+// https://console.firebase.google.com/u/0/project/smaro-webchat/settings/serviceaccounts/adminsdk
+const FB_SECRET_KEY = require("../smaro-webchat-firebase-adminsdk-2caep-7262b2043e.json");
+const FB_DB_URL =
+  "https://smaro-webchat-default-rtdb.asia-southeast1.firebasedatabase.app";
 
 const httpServer = createServer(app);
 
