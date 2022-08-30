@@ -1,7 +1,9 @@
+const firebaseAdmin = require("firebase-admin");
 const md5 = require("md5");
+const jwt = require("jsonwebtoken");
 
-const userDb = require("../model/user.model");
 const util = require("../util/generalUtil");
+const userDb = require("../model/user.model");
 const { emitterList, eventEmitter } = require("../emitter");
 
 async function signUp(req, res, next) {
@@ -17,18 +19,23 @@ async function signUp(req, res, next) {
 
     const addUser = await userDb({
       lastLogin: util.lastLogin(),
-      loggedIn: true,
-      token,
+      password: token,
       username,
     });
     addUser.save((err, user) => {
       const addedUser = JSON.parse(JSON.stringify(user));
-      delete addedUser.token;
-      addedUser.defaultParam = util.getConstant();
+      delete addedUser.password;
+      addedUser.expiry = new Date().getTime() + 1800000;
+
+      const jwtToken = jwt.sign(addedUser, "smaro");
+
+      const db = firebaseAdmin.database();
+      const activeUser = db.ref("/activeUser");
+      activeUser.child(addedUser.username).set(jwtToken);
+
       eventEmitter.emit(emitterList.userUpdate, null);
-      return res
-        .status(err ? 400 : 200)
-        .json(err ? "Unknown error" : addedUser);
+
+      return res.status(err ? 400 : 200).json(err ? "Unknown error" : jwtToken);
     });
   } catch (err) {
     console.log(err);
@@ -45,7 +52,7 @@ async function signIn(req, res, next) {
       return res.status(300).json("Credential Missing");
 
     const existingUser = await userDb.find(
-      { username, token },
+      { username, password: token },
       { username: 1 }
     );
     if (existingUser.length === 0)
@@ -53,17 +60,22 @@ async function signIn(req, res, next) {
 
     const updatedUser = await userDb.findOneAndUpdate(
       { username },
-      { loggedIn: true },
       { returnDocument: "after" }
     );
     updatedUser.save((err, user) => {
       const userDetail = JSON.parse(JSON.stringify(user));
-      delete userDetail.token;
-      userDetail.defaultParam = util.getConstant();
+      delete userDetail.password;
+      userDetail.expiry = new Date().getTime() + 1800000;
+
+      const jwtToken = jwt.sign(userDetail, "smaro");
+
+      const db = firebaseAdmin.database();
+      const activeUser = db.ref("/activeUser");
+      activeUser.child(userDetail.username).set(jwtToken);
+
       eventEmitter.emit(emitterList.userUpdate, null);
-      return res
-        .status(err ? 400 : 200)
-        .json(err ? "Unknown error" : userDetail);
+
+      return res.status(err ? 400 : 200).json(err ? "Unknown error" : jwtToken);
     });
   } catch (err) {
     console.log(err);
@@ -73,29 +85,29 @@ async function signIn(req, res, next) {
 async function signOut(req, res, next) {
   try {
     const { username } = req.body;
+    const { authorization } = req.headers;
 
     if (!username) return res.status(300).json("Invalid Action");
 
-    const existingUser = await userDb.find(
-      { username },
-      { username: 1, loggedIn: 1 }
-    );
+    const existingUser = await userDb.find({ username }, { username: 1 });
     if (existingUser.length === 0 || existingUser[0].loggedIn === false)
       return res.status(300).json("Invalid Action");
 
     const updatedUser = await userDb.findOneAndUpdate(
       { username },
-      { loggedIn: false, lastLogin: util.lastLogin() },
+      { lastLogin: util.lastLogin() },
       { returnDocument: "after" }
     );
     updatedUser.save((err, user) => {
-      const userDetail = JSON.parse(JSON.stringify(user));
-      delete userDetail.token;
-      userDetail.msg = "Succesfully Logout";
+      const db = firebaseAdmin.database();
+      const activeUser = db.ref("/activeUser");
+      activeUser.child(username).set(null);
+
       eventEmitter.emit(emitterList.userUpdate, null);
+
       return res
         .status(err ? 400 : 200)
-        .json(err ? "Unknown error" : userDetail);
+        .json(err ? "Unknown error" : authorization);
     });
   } catch (err) {
     console.log(err);

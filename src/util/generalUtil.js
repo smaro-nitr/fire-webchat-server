@@ -1,16 +1,5 @@
 const util = {};
 
-const defaultConstant = {
-  clearTimeMessage: "Chat Clean Up Initiated",
-  clearTime: 600000,
-  signOutTime: 120000,
-  warningTime: 15000,
-};
-
-util.getConstant = () => {
-  return defaultConstant;
-};
-
 appendZero = (value) => {
   return Number(value) < 10 ? `0${value}` : value;
 };

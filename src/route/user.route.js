@@ -10,5 +10,11 @@ userRouter.get(
     userController.allUser(req, res, next);
   })
 );
+userRouter.get(
+  "/active",
+  (userRouter.activeUser = (req, res, next) => {
+    userController.activeUser(req, res, next);
+  })
+);
 
 module.exports = userRouter;

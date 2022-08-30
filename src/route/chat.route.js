@@ -5,7 +5,7 @@ const chatController = require("../controller/chat.controller");
 const chatRouter = express.Router();
 
 chatRouter.get(
-  "/",
+  "/:reciever",
   (chatRouter.getMessage = (req, res, next) => {
     chatController.getMessage(req, res, next);
   })

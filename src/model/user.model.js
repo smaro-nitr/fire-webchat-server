@@ -5,11 +5,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  loggedIn: {
-    type: Boolean,
-    required: true,
-  },
-  token: {
+  password: {
     type: String,
     required: true,
   },
