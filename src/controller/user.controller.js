@@ -37,7 +37,7 @@ async function activeUser(req, res, next) {
     const activeUser = db.ref("/activeUser");
     await activeUser.once("value", (snapshot) => {
       const value = snapshot.val();
-      return res.status(200).json(Object.keys(value));
+      return res.status(200).json(value ? Object.keys(value) : []);
     });
   } catch (err) {
     console.log(err);
